@@ -1,15 +1,16 @@
 <?php
-// Assuming the JSON file is named 'GearData.json' and located in the same directory
-$jsonFilePath = '../json/GearData.json';
 
-// Extract the number from the URL
-$urlPath = $_SERVER['REQUEST_URI'];
-preg_match('/\/(\d+)/', $urlPath, $matches);
-$number = $matches[1] ?? null;
+$json = '../json/%s';
+$gearData = sprintf($json, 'GearData.json');
+$content = null;
+
+//Finding first instance of number
+$uri = $_SERVER['REQUEST_URI'];
+preg_match('/\/(\d+)/', $uri, $matches);
+$number = $matches[1];
 
 if ($number) {
-    // Read the JSON file
-    $jsonData = file_get_contents($jsonFilePath);
+    $jsonData = file_get_contents($gearData);
     $data = json_decode($jsonData, true);
 
     // Check if the number exists in the JSON data
@@ -40,7 +41,6 @@ if ($number) {
 } else {
     $content = "mainPage";
 }
-echo $content
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,6 +51,6 @@ echo $content
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<?php echo '\nPizza' ?>
+    <?php echo $content; ?>
 </body>
 </html>
